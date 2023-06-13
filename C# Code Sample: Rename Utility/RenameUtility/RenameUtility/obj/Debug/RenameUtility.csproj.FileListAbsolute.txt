@@ -1,0 +1,27 @@
+C:\Program Files\repos\RenameUtility\RenameUtility\bin\Debug\RenameUtility.exe.config
+C:\Program Files\repos\RenameUtility\RenameUtility\bin\Debug\RenameUtility.exe
+C:\Program Files\repos\RenameUtility\RenameUtility\bin\Debug\RenameUtility.pdb
+C:\Program Files\repos\RenameUtility\RenameUtility\bin\Debug\PathTooLong.dll
+C:\Program Files\repos\RenameUtility\RenameUtility\bin\Debug\PathTooLong.xml
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csprojAssemblyReference.cache
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.Form1.resources
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.Properties.Resources.resources
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.GenerateResource.cache
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.CoreCompileInputs.cache
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.CopyComplete
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.exe
+C:\Program Files\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.pdb
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\bin\Debug\RenameUtility.exe.config
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\bin\Debug\RenameUtility.exe
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\bin\Debug\RenameUtility.pdb
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\bin\Debug\PathTooLong.dll
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\bin\Debug\PathTooLong.xml
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.AssemblyReference.cache
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.SuggestedBindingRedirects.cache
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.Form1.resources
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.Properties.Resources.resources
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.GenerateResource.cache
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.CoreCompileInputs.cache
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.csproj.CopyComplete
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.exe
+D:\the island of nunya\eb lookin pretty sus\Program Files repos\repos\RenameUtility\RenameUtility\obj\Debug\RenameUtility.pdb

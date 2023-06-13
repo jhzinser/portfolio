@@ -1,0 +1,405 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PathTooLong</name>
+    </assembly>
+    <members>
+        <member name="T:PathTooLong.Exceptions.InvalidFileSearchException">
+            <summary>
+            When locating an item or items in the File System, if an invalid response is returned then this exception is thrown
+            </summary>
+        </member>
+        <member name="T:PathTooLong.Extensions.DateTimeExt">
+            <summary>
+            Helps convert the two parts of a FILETIME returned from the system into a useable DateTime and vice-versa.
+            </summary>
+        </member>
+        <member name="T:PathTooLong.Extensions.FileAttributesExt">
+             <summary>
+             Provides some useful shortcut functions for checking the state of a file attributes flag returned from the system.
+            
+             Mostly used to make the code easier to understand at a glance
+             </summary>
+        </member>
+        <member name="T:PathTooLong.DirectoryDataSnapshot">
+            <summary>
+            An extended version of a <see cref="T:PathTooLong.DirectoryData"/> which shows a snapshot of the directory structure when the object was built.
+            </summary>
+        </member>
+        <member name="P:PathTooLong.DirectoryDataSnapshot.DirectoryCount">
+            <summary>
+            Recursively counts the directories stored in the snapshot (not including itself)
+            </summary>
+        </member>
+        <member name="P:PathTooLong.DirectoryDataSnapshot.FileCount">
+            <summary>
+            Recursively counts the files stored in the snapshot
+            </summary>
+        </member>
+        <member name="P:PathTooLong.DirectoryDataSnapshot.Size">
+            <summary>
+            Recuresively sums the file sizes in bytes of files stored in the snapshot
+            </summary>
+        </member>
+        <member name="T:PathTooLong.DirectoryData">
+            <summary>
+            Represents a directory in the file system. It does not include information on items contained within.
+            </summary>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.Exists(System.String)">
+            <summary>
+             GetAttributes(path).Exists(); <see cref="M:PathTooLong.FileSystemScanner.GetAttributes(System.String)"/>
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.IsDirectory(System.String)">
+            <summary>
+             GetAttributes(path).IsDirectory(); <see cref="M:PathTooLong.FileSystemScanner.GetAttributes(System.String)"/>
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.IsFile(System.String)">
+            <summary>
+             GetAttributes(path).IsFile(); <see cref="M:PathTooLong.FileSystemScanner.GetAttributes(System.String)"/>
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.Attributes(System.String)">
+            <summary>
+            Returns a FileAttributes flag for the path passed. If the file doesnt exist it will be the equiv of -1. The best way to check is to include a using <see cref="N:PathTooLong.Extensions"/>
+            and use Exists() on the returned attributes.
+            
+            Always returns an FileAttibutes object, regardless of whether the file/directory exists.
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.GetAttributes(System.String)">
+            <summary>
+            <see cref="M:PathTooLong.FileSystemScanner.Attributes(System.String)"/>
+            </summary>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.GetFileSystemData(System.String)">
+            <summary>
+            Returns information about the directory or file in the path
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.GetFileSystemDataDeep(System.String)">
+            <summary>
+            Similar to <see cref="M:PathTooLong.FileSystemScanner.GetFileSystemData(System.String)"/>, but if a directory returns a DeepDirectoryData object with completed information regarding files and subdirectories
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.InvalidFileSearchException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.NotDirectoryException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.EnumerateDirectoryContents(System.String)">
+            <summary>
+            Runs through and returns a list of items from a directory, as a FileSystemData object, either a DirectoryData or FileData object depending on the type found.
+            
+            It doesnt not perform any actions until the IEnumerable is read from.
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.InvalidFileSearchException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.GetDirectoryDataDeep(System.String,System.Int32)">
+            <summary>
+            Recurively collects information about this directory and each subdirectory. The optional 'level' is the max amount of sub folders to collect information on.
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.InvalidFileSearchException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.NotDirectoryException"></exception>
+        </member>
+        <member name="M:PathTooLong.FileSystemScanner.GenerateFileSystemReturnData(System.String,PathTooLong.WIN32_FIND_DATA)">
+            <summary>
+            Returns the correct Data Type for the item, either FileData or DirectoryData
+            </summary>
+        </member>
+        <member name="T:PathTooLong.FileSystemManager">
+            <summary>
+            Used to perform manipulation on the file system.
+            </summary>
+        </member>
+        <member name="M:PathTooLong.FindResults.#ctor(System.String)">
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.InvalidFileSearchException"></exception>
+        </member>
+        <member name="M:PathTooLong.FindResults.CloseAndThrowSearchException(System.String)">
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.InvalidFileSearchException"></exception>
+        </member>
+        <member name="P:PathTooLong.FindResults.IsValid">
+            <summary>
+            No longer useable as its potentially a false positive result. However on creating the FindResults object an exception should be throw to signify an error in search
+            </summary>
+        </member>
+        <member name="T:PathTooLong.IFileSystemManager">
+            <summary>
+            Used to perform manipulation on the file system.
+            </summary>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Delete(System.String)">
+            <summary>
+            Deletes either a file/directory at the location passed.
+            
+            Note: If an item does not have the correct attributes to delete, it will attempt to change them
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.NotDeletedException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.SetAttributesException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Delete(PathTooLong.FileSystemData)">
+            <summary>
+            Deletes either a file/directory at the location passed.
+            
+            Note: If an item does not have the correct attributes to delete, it will attempt to change them
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.NotDeletedException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.SetAttributesException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Delete(PathTooLong.FileData)">
+            <summary>
+            Deletes a file from the system
+            
+            Note: If an item does not have the correct attributes to delete, it will attempt to change them
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.FileNotDeletedException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.SetAttributesException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Delete(PathTooLong.DirectoryData)">
+            <summary>
+            Recursively delete the contents of a directory to delete it from the system. 
+            
+            Note: If an item does not have the correct attributes to delete, it will attempt to change them
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.DirectoryNotDeletedException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.SetAttributesException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.SetAttributes(System.String,System.IO.FileAttributes)">
+            <summary>
+            Changes the attributes to the flags passed. 
+            
+            Has some limitations which are documented <see cref="!:https://msdn.microsoft.com/en-us/library/windows/desktop/aa365535%28v=vs.85%29.aspx">here</see> under 'Remarks'
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.SetAttributesException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Copy(System.String,System.String,System.Boolean)">
+            <summary>
+            Copies an item located at the source to the destination. 
+            
+            If the item is a file then it simply copies it, if the item is a directory it recursively copies the files from each sub directory. 
+            If the destination exists and overright = false then it will error, if overwrite = true then it will merge if a directory or delete and copy if a file. 
+            </summary>
+            <param name="source">The path of the item to copy</param>
+            <param name="destination">The path of that you want to copy to</param>
+            <param name="overwrite">Whether to overwrite/merge if the destination already exists</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathExistsException">If overwrite = false and the destination exists</exception>
+            <exception cref="T:PathTooLong.Exceptions.CreateDirectoryException">If copying a folder and an error happens creating the directory structure</exception>
+            <exception cref="T:PathTooLong.Exceptions.CopyFileException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.AccessDeniedException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Copy(PathTooLong.FileSystemData,System.String,System.Boolean)">
+            <summary>
+            Copies an item located at the source to the destination. 
+            
+            If the item is a file then it simply copies it, if the item is a directory it recursively copies the files from each sub directory. 
+            If the destination exists and overright = false then it will error, if overwrite = true then it will merge if a directory or delete and copy if a file. 
+            </summary>
+            <param name="source">The path of the item to copy</param>
+            <param name="destination">The path of that you want to copy to</param>
+            <param name="overwrite">Whether to overwrite/merge if the destination already exists</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathExistsException">If overwrite = false and the destination exists</exception>
+            <exception cref="T:PathTooLong.Exceptions.CreateDirectoryException">If copying a folder and an error happens creating the directory structure</exception>
+            <exception cref="T:PathTooLong.Exceptions.CopyFileException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.AccessDeniedException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Copy(PathTooLong.FileData,System.String,System.Boolean)">
+            <summary>
+            Copies a file to the destination. 
+            
+            If the destination exists and overright = false then it will error and is the prefered usage, if overwrite = true means it will delete and then copy if a file. 
+            </summary>
+            <param name="source"></param>
+            <param name="destination"></param>
+            <param name="overwrite"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathExistsException">If overwrite = false and the destination exists</exception>
+            <exception cref="T:PathTooLong.Exceptions.CopyFileException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.FileAccessDeniedException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemManager.Copy(PathTooLong.DirectoryData,System.String,System.Boolean)">
+            <summary>
+            Copies a directory to the destination recursively copying the files from each sub directory. 
+            
+            If the destination exists and overright = false then it will error and is the prefered usage, if overwrite = true means it will merge the directory and copy and replace the files and subdirectories.
+            It will not delete any files that dont match the files from the source.
+            </summary>
+            <param name="source"></param>
+            <param name="destination"></param>
+            <param name="overwrite"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathExistsException">If overwrite = false and the destination exists</exception>
+            <exception cref="T:PathTooLong.Exceptions.CreateDirectoryException">If an error happens creating the directory structure</exception>
+            <exception cref="T:PathTooLong.Exceptions.CopyFileException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.DirectoryAccessDeniedException"></exception>
+        </member>
+        <member name="T:PathTooLong.IFileSystemScanner">
+            <summary>
+            A FileSystemScanner is used to return data about whats contained on the file system.
+            </summary>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.Exists(System.String)">
+            <summary>
+             GetAttributes(path).Exists(); <see cref="M:PathTooLong.IFileSystemScanner.GetAttributes(System.String)"/>
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.IsFile(System.String)">
+            <summary>
+             GetAttributes(path).IsFile(); <see cref="M:PathTooLong.IFileSystemScanner.GetAttributes(System.String)"/>
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.IsDirectory(System.String)">
+            <summary>
+             GetAttributes(path).IsDirectory(); <see cref="M:PathTooLong.IFileSystemScanner.GetAttributes(System.String)"/>
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.Attributes(System.String)">
+            <summary>
+            Returns a FileAttributes flag for the path passed. If the file doesnt exist it will be the equiv of -1. The best way to check is to include a using for <see cref="N:PathTooLong.Extensions"/>
+            and use Exists() on the returned attributes.
+            
+            Note that means it always returns an FileAttibutes object, regardless of whether the file/directory exists.
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.GetAttributes(System.String)">
+            <summary>
+            <see cref="M:PathTooLong.IFileSystemScanner.Attributes(System.String)"/>
+            </summary>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.GetFileSystemData(System.String)">
+            <summary>
+            Returns information about the directory or file in the path
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.GetFileSystemDataDeep(System.String)">
+            <summary>
+            Similar to <see cref="M:PathTooLong.IFileSystemScanner.GetFileSystemData(System.String)"/>, but if a directory returns a DeepDirectoryData object with completed information regarding files and subdirectories
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.NotDirectoryException"></exception>
+        </member>
+        <member name="M:PathTooLong.IFileSystemScanner.EnumerateDirectoryContents(System.String)">
+            <summary>
+            Runs through and returns a list of items from a directory, as a FileSystemData object, either a DirectoryData or FileData object depending on the type found.
+            
+            It doesnt not perform any actions until the IEnumerable is read from.
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+        </member>
+        <member name="T:PathTooLong.IFindResults">
+            <summary>
+            Wraps the handle returned from FindFirstFile in a disposable class. Each result is accessed by Next(). Should throw an exception when being instantiated if the results are invalid.
+            
+            If the path was simply not found then the InvalidFileSearchException should be of subclass PathNotFoundException
+            </summary>
+            <exception cref="T:PathTooLong.Exceptions.PathNotFoundException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.InvalidFileSearchException"></exception>
+        </member>
+        <member name="P:PathTooLong.IFindResults.IsValid">
+            <summary>
+            No longer useable as its potentially a false positive result. However on creating the FindResults object an exception should be throw to signify an error in search
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PathTooLong.IPathUtility.ExtractName(System.String)" -->
+        <member name="M:PathTooLong.IPathUtility.ParsePath(System.String)">
+            <summary>
+            Convert the path to a pattern that can be used for long paths
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="P:PathTooLong.IPathUtility.CurrentDirectory">
+            <summary>
+            Returns the current working directory in the application
+            </summary>
+        </member>
+        <member name="M:PathTooLong.IPathUtility.IsRooted(System.String)">
+            <summary>
+            States whether the path passed starts with a drive letter or a unc path. Currently does not support file:// protocol uris
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.IWin32IO.DeleteFile(System.String)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.FileNotDeletedException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.FileAccessDeniedException"></exception>
+        </member>
+        <member name="M:PathTooLong.IWin32IO.FindResults(System.String)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.InvalidFileSearchException"></exception>
+        </member>
+        <member name="M:PathTooLong.IWin32IO.GetFileAttributes(System.String)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:PathTooLong.IWin32IO.SetFileAttributes(System.String,System.IO.FileAttributes)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.SetAttributesException"></exception>
+        </member>
+        <member name="M:PathTooLong.IWin32IO.RemoveDirectory(System.String)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.DirectoryNotDeletedException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.DirectoryAccessDeniedException"></exception>
+        </member>
+        <member name="M:PathTooLong.IWin32IO.CopyFile(System.String,System.String)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.CopyFileException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.FileAccessDeniedException"></exception>
+        </member>
+        <member name="M:PathTooLong.IWin32IO.CreateDirectory(System.String)">
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.CreateDirectoryException"></exception>
+            <exception cref="T:PathTooLong.Exceptions.DirectoryAccessDeniedException"></exception>
+        </member>
+        <member name="T:PathTooLong.Kernel32">
+            <summary>
+            A wrapper to expose the Kernel32 methods and constants to the rest of the project from one location.
+            </summary>
+        </member>
+        <member name="T:PathTooLong.FileData">
+            <summary>
+            Represents a File in the file system.
+            </summary>
+        </member>
+        <member name="P:PathTooLong.FileData.Size">
+            <summary>
+            Returns the size of the file (when the object was created) in bytes
+            </summary>
+        </member>
+        <member name="T:PathTooLong.FileSystemData">
+            <summary>
+            Represents a directory or a file within the system
+            </summary>
+        </member>
+        <member name="T:PathTooLong.WIN32_FIND_DATA">
+             <summary>
+             The structure returned by FindFirstFile and FindNext from kernel32.dll representing file/directory information
+            
+            	http://www.pinvoke.net/default.aspx/Structures/WIN32_FIND_DATA.html
+             </summary>
+        </member>
+    </members>
+</doc>
