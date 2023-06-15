@@ -1,0 +1,219 @@
+<!-- 
+-- stonesoup.html - a React App
+-- Made in a development environment as a React.js code sample.
+-- Mixes words together to make a randomized nonsense-word out of them.
+-- 
+-- Author: Jeremy Zinser
+-->
+<!DOCTYPE html>
+<html>
+
+<body>
+  <div id="root"></div>
+</body>
+
+<!-- This setup is not suitable for production. -->
+<!-- Only use it in development! -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script async src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react?dev",
+    "react-dom/client": "https://esm.sh/react-dom/client?dev"
+  }
+}
+</script>
+<script type="text/babel" data-type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+
+/* Function Ingredient
+ *
+ * An ingredient in the Soup.
+ * This is combined with the others when the Soup is cooked.
+ * name: The ingredient's name.
+ * color: The ingredient's color.
+ */
+function Ingredient({ name, color }) {
+	return <h2 style={{"color": color}}>{name}</h2>;
+}
+
+/* Function Soup
+ *
+ * A finished soup. Displayed on the table below the pot.
+ * The name is made from random jumbles of letters in each ingredient,
+ * the color is the averaged color code of the ingredients.
+ * name: The soup's name.
+ * color: The soup's color.
+ */
+function Soup({ name, color }) {
+	return <h1 style={{"color": color}}>{name}</h1>;
+}
+
+/* Class Pot
+ *
+ * The Pot contains the ingredients, the soups, and all the inputs involved.
+ */
+class Pot extends React.Component {
+	
+	//Class constructor.
+	constructor (props) {
+		super(props);
+		this.state = {
+			ingredientsList: [],
+			soupsList: [],
+			ingredientInput: "",
+			colorInput: "#000000"
+		};
+	}
+	
+	//Adds an ingredient to the soup with the specified name and color.
+	//Performed when clicking "Add Ingredient".
+	addIngredient = () => {
+		this.state.ingredientsList.splice(this.state.ingredientsList.length, 0, {
+			key: this.state.ingredientsList.length, name:this.state.ingredientInput, color: this.state.colorInput
+		});
+		this.setState({ingredientsList: this.state.ingredientsList});
+	}
+	
+	//Mixes the soup!
+	//Assembles a randomized name from bits of the ingredients for the soup's name.
+	//Averages the color codes of the ingredients for the soup's color.
+	//Empties the ingredients afterward.
+	mixSoup = () => {
+		var numIngredients = this.state.ingredientsList.length;
+		var workingName = "";
+		var finalColorCode = "";
+		var colorCodeArray = [0,0,0];
+		
+		//Assemble the name from bits of the ingredients' names.
+		for (var i = 0; i < numIngredients; i++) {
+			var amountOfChars = Math.min(
+				Math.ceil(Math.random()*2)+1,
+				this.state.ingredientsList[i].name.length
+			);
+			var charStart = Math.floor(Math.random() * (this.state.ingredientsList[i].name.length + 1 - amountOfChars));
+			
+			workingName = workingName + this.state.ingredientsList[i].name.substring(charStart, charStart + amountOfChars);			
+		}
+		
+		//Sum up all the color codes.
+		for (var i = 0; i < numIngredients; i++) {
+			var nextColorCode = [
+				this.state.ingredientsList[i].color.substring(1, 3),
+				this.state.ingredientsList[i].color.substring(3, 5),
+				this.state.ingredientsList[i].color.substring(5, 7)
+			];
+			
+			//We add up every color code from each ingredient into its corresponding segment.
+			for (var j = 0; j < 3; j++) {
+				colorCodeArray[j] = colorCodeArray[j] + parseInt(nextColorCode[j], 16);
+			}
+		}
+		//Divide each of the three RGB values to get the average.
+		for (var j = 0; j < 3; j++) {
+			colorCodeArray[j] = Math.floor(colorCodeArray[j] / numIngredients);
+		}
+		
+		//We have the integers, convert them to hexadecimal to get the final color code!
+		finalColorCode = "#" 
+		 + Number(colorCodeArray[0]).toString(16) 
+		 + Number(colorCodeArray[1]).toString(16)
+		 + Number(colorCodeArray[2]).toString(16);
+		
+		//With the name and color code completed, we update the lists now.
+		this.state.soupsList.splice(this.state.soupsList.length, 0, {
+			key: this.state.soupsList.length, name: workingName, color: finalColorCode
+		});
+		this.setState({soupsList: this.state.soupsList});
+		this.setState({ingredientsList: []});
+	}
+	
+	//Sets the internal variable for the Ingredient Name input.
+	updateIngredientInput = (evt) => {
+		const val = evt.target.value;
+		this.setState({ingredientInput: "" + val});
+	}
+	
+	//Sets the internal variable for the Ingredient Color input.
+	updateColorInput = (evt) => {
+		const val = evt.target.value;
+		this.setState({colorInput: "" + val});
+	}
+	
+	//React render method.
+	render() {
+		return(<>
+			<div class="inputBox">
+				<input value={this.state.ingredientInput} onChange={evt => this.updateIngredientInput(evt)}></input>
+				<br></br>
+				<input type={"color"} value={this.state.colorInput} onChange={evt => this.updateColorInput(evt)}></input>
+				<br></br>
+				<button onClick={this.addIngredient}>Add Ingredient</button> 
+				<br></br>
+			</div>
+			<div class="pot">
+				{this.state.ingredientsList.map(
+					(ingredient) => <Ingredient key={ingredient.key} name={ingredient.name} color={ingredient.color} />
+				)}
+			</div>
+			<br />
+			<br />
+			<div class="table">
+				<button onClick={this.mixSoup}>Mix the Soup</button>
+				<br></br>
+				{this.state.soupsList.map(
+					(soup) => <Soup key={soup.key} name={soup.name} color={soup.color} />
+				)}
+			</div>
+		</>);
+	}
+}
+
+const root = createRoot(document.getElementById('root'));
+root.render(
+    <Pot />
+);
+</script>
+
+<style>
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: sans-serif;
+	margin: 20px;
+	padding: 0;
+}
+
+.pot {
+	border-left: 3px outset #000000;
+	border-right: 3px outset #000000;
+	border-bottom: 3px outset #000000;
+	border-radius: 5px;
+}
+
+.table {
+	border-bottom: 4px outset #884400;
+}
+
+h1 {
+	margin-top: 0;
+	font-size: 22px;
+}
+
+h2 {
+	margin-top: 0;
+	font-size: 20px;
+}
+
+br {
+	margin-bottom: 12px;
+}
+
+
+</style>
+</html>
