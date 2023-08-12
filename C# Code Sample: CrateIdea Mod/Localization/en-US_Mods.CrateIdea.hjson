@@ -1,0 +1,84 @@
+# This file will automatically update with entries for new content after a build and reload
+
+Items: {
+	SwordCrate: {
+		DisplayName: Sword Crate
+		Tooltip: Lookin' sharp!
+	}
+
+	Excalicrate: {
+		DisplayName: Excalibox
+		Tooltip: I think that crate got... the point!
+	}
+
+	ArcherCrate: {
+		DisplayName: Archer Crate
+		Tooltip: Do you want crates? Because that's how you get crates.
+	}
+
+	SherwoodCrate: {
+		DisplayName: Sherwood Crate
+		Tooltip: We didn't land on Sherwood Forest, Sherwood Forest landed on us!
+	}
+
+	CoolCrate: {
+		DisplayName: Cool Crate
+		Tooltip: Stay frosty.
+	}
+
+	CoolerCoolCrate: {
+		DisplayName: The Cooler Cool Crate
+		Tooltip: Stay frosty.
+	}
+
+	GardenCrate: {
+		DisplayName: Garden Crate
+		Tooltip: It'll grow on you.
+	}
+
+	BotanicalCrate: {
+		DisplayName: Botanical Crate
+		Tooltip: It'll grow on you.
+	}
+
+	FishCrate: {
+		DisplayName: Fish Crate
+		Tooltip: That just sounds like catching fish with extra steps!
+	}
+
+	BigFishCrate: {
+		DisplayName: Big Fish Crate
+		Tooltip: I'm telling you guys, it was huge!
+	}
+
+	CrateOfCthulhu: {
+		DisplayName: Crate of Cthulhu
+		Tooltip: Lunacy!
+	}
+
+	CrateCrate: {
+		DisplayName: Crate Crate
+		Tooltip: On the verge of Crateness
+	}
+
+	CratestCrate: {
+		DisplayName: Cratest Crate
+		Tooltip: It's a crate day!
+	}
+}
+
+Tiles: {
+	SwordCrate.MapEntry: Sword Crate
+	Excalicrate.MapEntry: Excalicrate
+	ArcherCrate.MapEntry: Archer Crate
+	SherwoodCrate.MapEntry: Sherwood Crate
+	CoolCrate.MapEntry: Cool Crate
+	CoolerCoolCrate.MapEntry: The Cooler Cool Crate
+	GardenCrate.MapEntry: Garden Crate
+	BotanicalCrate.MapEntry: Botanical Crate
+	FishCrate.MapEntry: Fish Crate
+	BigFishCrate.MapEntry: Big Fish Crate
+	CrateOfCthulhu.MapEntry: Crate Of Cthulhu
+	CrateCrate.MapEntry: Crate Crate
+	CratestCrate.MapEntry: Cratest Crate
+}

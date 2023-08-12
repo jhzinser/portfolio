@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "vtZ4UTiAWK3ayAP0NoHFwyAJ0jr4SHGNLgN2f+heaTJCuoPncz59YZRa+pXT+7gosKQdDWGgr/K8oTc3lX55nA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\docto\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\CrateIdea\\CrateIdea.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\docto\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
+  ],
+  "logs": []
+}
