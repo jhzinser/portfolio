@@ -1,0 +1,342 @@
+<!--KnockoutGrillMenu.html
+  --Made by Jeremy Zinser
+  --
+  --This small web application displays a restaurant menu that is populated and formatted using Knockout.js.
+  --The menu can be filtered by item category, or sorted by different parameters such as price or nutrition facts.
+  --Selecting an item on the menu shows its details in the div above the table.
+  --The page can run from a local machine as long as knockout is installed in the same folder.
+  --
+  --The menu data is built in to this prototype for testing purposes.
+  --In a larger web application, it would use an external data source such as a database.
+  -->
+<!DOCTYPE html>
+<html>
+
+<script type='text/javascript' src='knockout-3.5.1.js'></script>
+
+<head>
+	<style>
+		/* Some minimal styling for the menu table. */
+		.table-container {
+			overflow-y: scroll;
+		}
+		
+		.fixed-header {
+			position: sticky;
+			top: 0;
+			background-color: #F2F2F2;
+			font-weight: bold;
+		}
+		
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		
+		th, td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #DDDDDD;
+			border-right: 1px solid #DDDDDD;
+			border-left: 1px solid #CCCCCC;
+		}
+		
+		/* Styling that gets whitespace to work in the details span.*/
+		.details-container span {
+			white-space: pre-wrap;
+		}
+		
+	</style>
+</head>
+
+<body>
+	<!--This div contains the details of the selected item as well as the filter and sort dropdowns.-->
+	<div class='details-container'>
+		<h2 data-bind='text: selectionTitle()'></h2>
+		<span data-bind='text: selectionText()'></span>
+		<br>
+		
+		<label>Show categories: </label>
+		<select data-bind='options: categoriesList, value: currentCategory, event: {change: runFilter}'></select>
+		<br>
+		
+		<label>Sort by </label>
+		<select data-bind='options: sortingList, value: currentSort, event: {change: runSort}'></select> 
+		<select data-bind='options: sortOrders, value: currentSortOrder, event: {change: runSort}'></select>
+	</div>
+
+	<!--This div contains the menu itself. Columns are numbered from 00 to 12.-->
+	<div class='table-container'>
+		<table>
+			<thead>
+				<tr class='fixed-header'>
+					<!--00--><th>Item</th>
+					<!--01--><th>Price</th>
+					<!--02--><th>Calories</th>
+					<!--03--><th>Total Fat (g)</th>
+					<!--04--><th>Saturated Fat (g)</th>
+					<!--05--><th>Trans Fat (g)</th>
+					<!--06--><th>Cholesterol (mg)</th>
+					<!--07--><th>Sodium (mg)</th>
+					<!--08--><th>Carbohydrates (g)</th>
+					<!--09--><th>Dietary Fiber (g)</th>
+					<!--10--><th>Sugars (g)</th>
+					<!--11--><th>Protein (g)</th>
+					<!--12--><th>Allergens</th>
+				</tr>
+			</thead>
+			<tbody data-bind='foreach: items'>
+				<tr data-bind='style: { backgroundColor: itemColor,
+										fontWeight: selectedItem() ? "bold" : "normal",
+										border: selectedItem() ? "3px solid #222266" : "1px solid #444444"},
+							   click: $root.selectItem, hidden: isFiltered'>
+					<!--00--><td><span data-bind='text: name'></span></td>
+					<!--01--><td><span data-bind='text: formattedPrice'></span></td>
+					<!--02--><td><span data-bind='text: calories'></span></td>
+					<!--03--><td><span data-bind='text: totalFat'></span></td>
+					<!--04--><td><span data-bind='text: satFat'></span></td>
+					<!--05--><td><span data-bind='text: transFat'></span></td>
+					<!--06--><td><span data-bind='text: cholesterol'></span></td>
+					<!--07--><td><span data-bind='text: sodium'></span></td>
+					<!--08--><td><span data-bind='text: carbs'></span></td>
+					<!--09--><td><span data-bind='text: fiber'></span></td>
+					<!--10--><td><span data-bind='text: sugars'></span></td>
+					<!--11--><td><span data-bind='text: protein'></span></td>
+					<!--12--><td><span data-bind='text: allergensString'></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+<script>
+
+
+/* We're going to hardcode a 'test data set' here.
+ * In a larger program, this would take input from a database.
+ */
+ 
+var menuDataIn = [
+	{
+		name: '5 Bone-In Wings', price: 3.99, category: 'Wings', 
+		calories: 360, totalFat: 20, satFat: 6, transFat: 1, cholesterol: 180,
+		sodium: 135, carbs: 0, fiber: 0, sugars: 0, protein: 44,
+		desc: 'Our signature chicken wings, grilled to perfection. \nComes with any of our signature sauces.',
+		allergens: [ 'Wheat', 'Gluten' ], id: 0, itemColor: '#E2B689'
+	},
+	{
+		name: '5 Boneless Wings', price: 3.99, category: 'Wings', 
+		calories: 300, totalFat: 15, satFat: 6, transFat: 1, cholesterol: 70,
+		sodium: 1045, carbs: 17, fiber: 1, sugars: 1, protein: 24,
+		desc: 'Our mouthwatering boneless wings. \nComes with any of our signature sauces.',
+		allergens: [ 'Wheat', 'Gluten' ], id: 1, itemColor: '#E2B689'
+	},
+	{
+		name: 'Sweet BBQ (5 wings)', price: 0.19, category: 'Sauce', 
+		calories: 50, totalFat: 0, satFat: 0, transFat: 0, cholesterol: 0,
+		sodium: 560, carbs: 11, fiber: 1, sugars: 8, protein: 0,
+		desc: 'Our mildest option. All sweet, no heat. \nFree with any order of wings.',
+		allergens: [ 'No Allergens' ], id: 2, itemColor: '#66FF99'
+	},
+	{
+		name: 'Parmesan Garlic (5 wings)', price: 0.19, category: 'Sauce', 
+		calories: 130, totalFat: 12, satFat: 2, transFat: 0, cholesterol: 12,
+		sodium: 625, carbs: 3, fiber: 1, sugars: 1, protein: 1,
+		desc: 'Parmesan cheese and garlic sauce: a match made in heaven. \nFree with any order of wings.',
+		allergens: [ 'No Allergens' ], id: 3, itemColor: '#66FF66'
+	},
+	{
+		name: 'Medium BBQ (5 wings)', price: 0.19, category: 'Sauce', 
+		calories: 30, totalFat: 3, satFat: 1, transFat: 0, cholesterol: 5,
+		sodium: 1085, carbs: 1, fiber: 0, sugars: 0, protein: 1,
+		desc: 'Savory flavor with a kick to it. \nFree with any order of wings.',
+		allergens: [ 'No Allergens' ], id: 4, itemColor: '#FFFF66'
+	},
+	{
+		name: 'Hot BBQ (5 wings)', price: 0.19, category: 'Sauce', 
+		calories: 45, totalFat: 4, satFat: 1, transFat: 0, cholesterol: 0,
+		sodium: 1100, carbs: 2, fiber: 0, sugars: 0, protein: 1,
+		desc: 'Big on flavor, big on spice. \nFree with any order of wings.',
+		allergens: [ 'No Allergens' ], id: 5, itemColor: '#FFBB99'
+	},
+	{
+		name: 'Blast Furnace Habanero (5 wings)', price: 0.19, category: 'Sauce', 
+		calories: 75, totalFat: 1, satFat: 0, transFat: 0, cholesterol: 0,
+		sodium: 435, carbs: 8, fiber: 1, sugars: 0, protein: 1,
+		desc: 'If we made this any hotter, you would have to sign a waiver. \nFree with any order of wings.',
+		allergens: [ 'No Allergens' ], id: 6, itemColor: '#FF9999'
+	}
+];
+
+/* This contains all the View Model code.
+ */
+var MenuModel = function(items) {
+	
+	var self = this;
+	
+	//Initialize the first screen.
+	self.lastSelectedItem = null;
+	self.selectionTitle = ko.observable('Select an item.');
+	self.selectionText = ko.observable('\n\n\n');
+	
+	//Map the data to an observable array.
+	self.items = ko.observableArray(ko.utils.arrayMap(items, function(item) {
+		return {
+			name: item.name,
+			price: item.price,
+			formattedPrice: ('$' + item.price.toFixed(2)),
+			category: item.category,
+			calories: item.calories,
+			totalFat: item.totalFat,
+			satFat: item.satFat,
+			transFat: item.transFat,
+			cholesterol: item.cholesterol,
+			sodium: item.sodium,
+			carbs: item.carbs,
+			fiber: item.fiber,
+			sugars: item.sugars,
+			protein: item.protein,
+			desc: item.desc,
+			allergens: item.allergens,
+			allergensString: item.allergens.join(', '),
+			id: item.id,
+			itemColor: item.itemColor,
+			selectedItem: ko.observable(false),
+			isFiltered: ko.observable(false)
+		};
+	}));
+	
+	//Populate the categories list with "All" and every unique category.
+	self.categoriesList = ['All'];
+	self.currentCategory = self.categoriesList[0];
+	
+	self.items().forEach((item) => {
+		if (!self.categoriesList.includes(item.category)) {
+			self.categoriesList.push(item.category);
+		}
+	});
+	
+	//Fill the sorting and Ascending/Descending selection.
+	self.sortingList = [
+		'Default',
+		'Price',
+		'Calories',
+		'Total Fat',
+		'Saturated Fat',
+		'Trans Fat',
+		'Cholesterol',
+		'Sodium',
+		'Carbohydrates',
+		'Dietary Fiber',
+		'Sugars',
+		'Protein'
+	];
+	self.currentSort = self.sortingList[0];
+	
+	self.sortOrders = ['Ascending', 'Descending'];
+	self.currentSortOrder = self.sortOrders[0];
+	
+	/* When an item is clicked:
+	 * -Deselect the last selected item.
+	 * -Select the clicked item.
+	 * -Update the Selection Title and Selection Text in the upper div.
+	 */
+	self.selectItem = function(item) {
+		
+		//Deselect the previously selected item.
+		if (self.lastSelectedItem) {
+			self.lastSelectedItem.selectedItem(false);
+		}
+		
+		//Select the previously selected item.
+		item.selectedItem(true);
+		self.lastSelectedItem = item;
+		
+		//The selection title is just the item's name and price.
+		self.selectionTitle(item.name + ' - ' + item.formattedPrice);
+		
+		//The selection text has the description, followed by a short list of its nutrition facts.
+		self.selectionText(
+			item.desc + '\n\n' +
+			item.calories + ' calories | ' + item.totalFat + 'g Total Fat (' +
+			item.satFat + 'g Saturated Fat, ' + item.transFat + 'g Trans Fat)\n' +
+			item.cholesterol + 'mg cholesterol | ' + item.sodium + 'mg sodium\n' +
+			item.carbs + 'g carbs | ' + item.fiber + 'g fiber | ' + item.sugars + 'g sugars\n' +
+			item.protein + 'g protein\n' +
+			'\n' + 'Contains ' + item.allergensString + '.\n'
+		);
+	}
+	 
+	/* When running the filter, we iterate through all the items.
+	 * If we have the default category, isFiltered is false for everything.
+	 * If the filter matches the category, we set isFiltered to false.
+	 * If the category is not default and does not match, set isFiltered to true.
+	 */
+	self.runFilter = function(input) {
+		self.items().forEach((item) => {
+			if (self.currentCategory == 'All' || self.currentCategory == item.category) {
+				item.isFiltered(false);
+			} else {
+				item.isFiltered(true);
+			}
+		});
+	}
+	
+	/* Run this every time sorting settings are changed.
+	 * Sort by the selected field. If the sort order is set to Descending, reverse the result.
+	 */
+	self.runSort = function(input) {
+		
+		//Run a sort on the array based on the current sort mode.
+		self.items.sort(function (l, r) {
+			if (self.currentSort == 'Price') {
+				return l.price === r.price ? 0 : l.price < r.price ? -1 : 1;
+			}
+			else if (self.currentSort == 'Calories') {
+				return l.calories === r.calories ? 0 : l.calories < r.calories ? -1 : 1;
+			}
+			else if (self.currentSort == 'Total Fat') {
+				return l.totalFat === r.totalFat ? 0 : l.totalFat < r.totalFat ? -1 : 1;
+			}
+			else if (self.currentSort == 'Saturated Fat') {
+				return l.satFat === r.satFat ? 0 : l.satFat < r.satFat ? -1 : 1;
+			}
+			else if (self.currentSort == 'Trans Fat') {
+				return l.transFat === r.transFat ? 0 : l.transFat < r.transFat ? -1 : 1;
+			}
+			else if (self.currentSort == 'Cholesterol') {
+				return l.cholesterol === r.cholesterol ? 0 : l.cholesterol < r.cholesterol ? -1 : 1;
+			}
+			else if (self.currentSort == 'Sodium') {
+				return l.sodium === r.sodium ? 0 : l.sodium < r.sodium ? -1 : 1;
+			}
+			else if (self.currentSort == 'Carbohydrates') {
+				return l.carbs === r.carbs ? 0 : l.carbs < r.carbs ? -1 : 1;
+			}
+			else if (self.currentSort == 'Dietary Fiber') {
+				return l.fiber === r.fiber ? 0 : l.fiber < r.fiber ? -1 : 1;
+			}
+			else if (self.currentSort == 'Sugars') {
+				return l.sugars === r.sugars ? 0 : l.sugars < r.sugars ? -1 : 1;
+			}
+			else if (self.currentSort == 'Protein') {
+				return l.protein === r.protein ? 0 : l.protein < r.protein ? -1 : 1;
+			}
+			else {
+				return l.id === r.id ? 0 : l.id < r.id ? -1 : 1;
+			}
+		});
+		
+		//Reverse the items if Descending order is selected.
+		if (self.currentSortOrder == 'Descending') {
+			self.items.reverse();
+		}
+	}
+}
+
+//Apply bindings.
+ko.applyBindings(new MenuModel(menuDataIn));
+
+</script>
+
+</html>
