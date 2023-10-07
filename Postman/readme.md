@@ -1,0 +1,1 @@
+This is an automated test written in Postman that iterates over an array of fighting robots (just called "robots") and runs tests to make sure there is no invalid data (such as a robot with -2 arms or too many weapons for its arms).
