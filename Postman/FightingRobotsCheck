@@ -1,0 +1,34 @@
+/* Author: Jeremy Zinser
+ *
+ * These are tests for the Postman API.
+ * These tests iterate over an array of robots. Each robot has a name, a number of arms, and an optional list of weapons.
+ * The tests check:
+ * -if the robots have a name and a valid number of arms
+ * -if the robots do not have more weapons than they have arms
+ *
+ * An example of 
+ */
+
+//Get the json from the response.
+let response = pm.response.json();
+
+/* Iterate through the robots array.
+ * For each robot, check if the robot has been assigned a name and a non-negative number of arms.
+ * Then check to see if a robot has too few arms to hold all its weapons.
+ * (A robot that has no weapons will have enough arms by default.)
+ */
+
+response.args.robots.forEach(function(robot) {
+    pm.test(robot.name + " has a name and a number of arms", function() {
+        pm.expect(robot.name).exist;
+        pm.expect(parseInt(robot.arms)).to.not.eql(NaN);
+        pm.expect(parseInt(robot.arms)).to.not.lessThan(0);
+    });
+    
+    pm.test(robot.name + " cannot have more weapons than arms", function() {
+        if (robot.weapons) {
+            pm.expect(parseInt(robot.arms)).to.not.lessThan(parseInt(robot.weapons.length));
+        }
+    });
+})
+
