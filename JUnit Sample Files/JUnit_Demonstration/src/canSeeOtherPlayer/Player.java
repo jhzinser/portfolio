@@ -2,7 +2,7 @@ package canSeeOtherPlayer;
 
 public class Player {
 
-	String name;
+    String name;
     int x;
     int y;
     int visionRange;
